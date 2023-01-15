@@ -21,7 +21,7 @@
 golem::fill_desc(
   pkg_name = "spatialfilter",
   pkg_title = "Spatial Filter Shiny applilcation",
-  pkg_description = "Shiny application with spatial filter. Return features that intersect with the shape drawn on the map.",
+  pkg_description = "Shiny application for spatial filtering. The app returns features that intersect with the shape drawn on the map.",
   author_first_name = "Martin",
   author_last_name = "Haringa",
   author_email = "mtharinga@gmail.com",

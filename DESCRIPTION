@@ -2,12 +2,26 @@ Package: spatialfilter
 Title: Spatial Filter Shiny applilcation
 Version: 0.0.0.9000
 Authors@R: person('Martin', 'Haringa', email = 'mtharinga@gmail.com', role = c('cre', 'aut'))
-Description: Shiny application with spatial filter. Return features that intersect with the shape drawn on the map.
+Description: Shiny application for spatial filtering. The app returns features that intersect with the shape drawn on the map.
 License: MIT + file LICENSE
 Imports: 
     config (>= 0.3.1),
+    dplyr,
+    DT,
     golem (>= 0.3.5),
-    shiny (>= 1.7.4)
+    leaflet,
+    leaflet.extras,
+    sf,
+    shiny (>= 1.7.4),
+    shiny.semantic,
+    spatialrisk
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-US
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)
