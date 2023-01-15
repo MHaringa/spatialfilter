@@ -3,7 +3,7 @@ Title: Spatial Filter Shiny applilcation
 Version: 0.0.0.9000
 Authors@R: person('Martin', 'Haringa', email = 'mtharinga@gmail.com', role = c('cre', 'aut'))
 Description: Shiny application for spatial filtering. The app returns features that intersect with the shape drawn on the map.
-License: MIT + file LICENSE
+License: GPL (>= 2)
 Imports: 
     config (>= 0.3.1),
     dplyr,
@@ -11,10 +11,13 @@ Imports:
     golem (>= 0.3.5),
     leaflet,
     leaflet.extras,
+    lwgeom,
+    readxl,
     sf,
     shiny (>= 1.7.4),
     shiny.semantic,
-    spatialrisk
+    spatialrisk,
+    writexl
 Suggests: 
     spelling,
     testthat (>= 3.0.0)

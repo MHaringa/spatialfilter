@@ -2,7 +2,20 @@
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny.semantic
+#' @importFrom shiny actionLink
+#' @importFrom shiny br
+#' @importFrom shiny conditionalPanel
+#' @importFrom shiny h1
+#' @importFrom shiny h3
+#' @importFrom shiny h4
+#' @importFrom shiny uiOutput
+#' @importFrom shiny p
+#' @importFrom shiny.semantic file_input
+#' @importFrom shiny.semantic segment
+#' @importFrom shiny.semantic semanticPage
+#' @importFrom shiny.semantic sidebar_layout
+#' @importFrom shiny.semantic sidebar_panel
+#' @importFrom shiny.semantic toggle
 #' @noRd
 app_ui <- function(request) {
   shiny.semantic::semanticPage(
@@ -46,7 +59,7 @@ app_ui <- function(request) {
                                           "showmap",
                                           label = "Show data on map")
           )),
-        br(),
+        shiny::br(),
         shiny::conditionalPanel(
           condition = "output.nrowsdata == true",
           shiny.semantic::action_button(class = "green",
@@ -57,11 +70,11 @@ app_ui <- function(request) {
       shiny.semantic::main_panel(
         shiny::uiOutput("showcard"),
         segment(leaflet::leafletOutput("mymap")),
-        br(),
+        shiny::br(),
         shiny.semantic::semantic_DTOutput("contents")
       )
     ),
-    p("\u24B8 Built by Martin Haringa.")
+    shiny::p("\u24B8 Built by Martin Haringa.")
   )
 }
 
@@ -70,18 +83,17 @@ app_ui <- function(request) {
 #' This function is internally used to add external
 #' resources inside the Shiny application.
 #'
-#' @import shiny
 #' @importFrom golem add_resource_path activate_js favicon bundle_resources
 #' @noRd
 golem_add_external_resources <- function() {
-  add_resource_path(
+  golem::add_resource_path(
     "www",
     app_sys("app/www")
   )
 
   tags$head(
-    favicon(),
-    bundle_resources(
+    golem::favicon(),
+    golem::bundle_resources(
       path = app_sys("app/www"),
       app_title = "spatialfilter"
     )

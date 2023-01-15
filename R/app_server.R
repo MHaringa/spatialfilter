@@ -1,9 +1,53 @@
-
-
 #' The application server-side
 #'
 #' @param input,output,session Internal parameters for {shiny}.
-#' @import shiny
+#' @importFrom dplyr %>%
+#' @importFrom dplyr group_by
+#' @importFrom dplyr mutate
+#' @importFrom dplyr summarise
+#' @importFrom leaflet addLayersControl
+#' @importFrom leaflet addProviderTiles
+#' @importFrom leaflet addTiles
+#' @importFrom leaflet clearControls
+#' @importFrom leaflet clearMarkers
+#' @importFrom leaflet fitBounds
+#' @importFrom leaflet leaflet
+#' @importFrom leaflet leafletProxy
+#' @importFrom leaflet renderLeaflet
+#' @importFrom leaflet.extras addDrawToolbar
+#' @importFrom leaflet.extras editToolbarOptions
+#' @importFrom leaflet.extras selectedPathOptions
+#' @importFrom lwgeom lwgeom_make_valid
+#' @importFrom readxl read_xls
+#' @importFrom readxl read_xlsx
+#' @importFrom sf st_as_sf
+#' @importFrom sf st_cast
+#' @importFrom sf st_combine
+#' @importFrom shiny div
+#' @importFrom shiny downloadHandler
+#' @importFrom shiny isTruthy
+#' @importFrom shiny observeEvent
+#' @importFrom shiny outputOptions
+#' @importFrom shiny reactive
+#' @importFrom shiny reactiveValues
+#' @importFrom shiny renderUI
+#' @importFrom shiny req
+#' @importFrom shiny uiOutput
+#' @importFrom shiny.semantic actionButton
+#' @importFrom shiny.semantic card
+#' @importFrom shiny.semantic cards
+#' @importFrom shiny.semantic dropdown_input
+#' @importFrom shiny.semantic hide_modal
+#' @importFrom shiny.semantic modal
+#' @importFrom shiny.semantic segment
+#' @importFrom shiny.semantic selectInput
+#' @importFrom shiny.semantic semantic_DT
+#' @importFrom shiny.semantic show_modal
+#' @importFrom stats aggregate
+#' @importFrom utils read.csv
+#' @importFrom utils write.csv
+#' @importFrom writexl write_xlsx
+#'
 #' @noRd
 app_server <- function(input, output, session) {
 
@@ -12,10 +56,10 @@ app_server <- function(input, output, session) {
   output$showcard <- shiny::renderUI({
 
     card1 <-  shiny.semantic::card(class = "blue",
-                                   div(class = "content",
-                                       div(class = "header", "Cumulation"),
-                                       div(class = "meta", uiOutput("somkolom1")),
-                                       div(class = "description", uiOutput("tekst1"))))
+                                   shiny::div(class = "content",
+                                              shiny::div(class = "header", "Cumulation"),
+                                              shiny::div(class = "meta", shiny::uiOutput("somkolom1")),
+                                              shiny::div(class = "description", shiny::uiOutput("tekst1"))))
     if ( !isTRUE(input$tog1) ){
       x <- shiny.semantic::segment(
         shiny.semantic::cards(
@@ -28,10 +72,10 @@ app_server <- function(input, output, session) {
             class = "two",
             card1,
             shiny.semantic::card(class = "blue",
-                                 div(class = "content",
-                                     div(class = "header", "Cumulation by group"),
-                                     div(class = "meta", uiOutput("somkolom2")),
-                                     div(class = "description", uiOutput("tekst2"))))
+                                 shiny::div(class = "content",
+                                            shiny::div(class = "header", "Cumulation by group"),
+                                            shiny::div(class = "meta", shiny::uiOutput("somkolom2")),
+                                            shiny::div(class = "description", shiny::uiOutput("tekst2"))))
           )
         )
       }
@@ -43,7 +87,7 @@ app_server <- function(input, output, session) {
     extension <- tools::file_ext(inFile$name)
     filepath <- inFile$datapath
     df <- switch(extension,
-                 csv = read.csv(inFile$datapath),
+                 csv = utils::read.csv(inFile$datapath),
                  xls = readxl::read_xls(filepath),
                  xlsx = readxl::read_xlsx(filepath))
     indata$data <- df
@@ -59,7 +103,7 @@ app_server <- function(input, output, session) {
     nrow(indata$data) > 0
   })
 
-  outputOptions(output, "nrowsdata", suspendWhenHidden = FALSE)
+  shiny::outputOptions(output, "nrowsdata", suspendWhenHidden = FALSE)
 
   output$lonKolom <- shiny::renderUI({
     shiny::req(indata$data)
@@ -130,8 +174,8 @@ app_server <- function(input, output, session) {
         polylineOptions = FALSE,
         circleMarkerOptions = FALSE,
         markerOptions = FALSE,
-        editOptions = editToolbarOptions(
-          selectedPathOptions = selectedPathOptions())
+        editOptions = leaflet.extras::editToolbarOptions(
+          selectedPathOptions = leaflet.extras::selectedPathOptions())
       )
 
     if ( input$tog1 ){
@@ -196,7 +240,7 @@ app_server <- function(input, output, session) {
 
       polygon <- bsf %>%
         dplyr::group_by(id) %>%
-        dplyr::summarise(geometry = st_combine(geometry)) %>%
+        dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
         sf::st_cast('POLYGON') %>%
         dplyr::mutate(geometry = lwgeom::lwgeom_make_valid(geometry))
 
@@ -264,7 +308,7 @@ app_server <- function(input, output, session) {
   output$tekst2 <- shiny::renderUI({
     if ( shiny::isTruthy(input$valinput) & shiny::isTruthy(vals$rows) ){
       shiny::req(indata$data)
-      sumcat <- aggregate(indata$data[vals$rows,][[input$valinput]],
+      sumcat <- stats::aggregate(indata$data[vals$rows,][[input$valinput]],
                           list(cc = indata$data[vals$rows,][[input$catinput]]),
                           FUN = function(v){ c(sum = sum(v, na.rm = TRUE),
                                                ncol = length(v))})
@@ -326,7 +370,7 @@ app_server <- function(input, output, session) {
     content = function(file) {
       switch(input$dd_ext1,
              CSV = {
-               write.csv(dtInput(), file, row.names = FALSE)
+               utils::write.csv(dtInput(), file, row.names = FALSE)
              },
              XLSX = {
                writexl::write_xlsx(list(filtered_spatial_data = dtInput()), file)
