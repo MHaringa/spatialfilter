@@ -1,6 +1,6 @@
 Package: spatialfilter
 Title: Spatial Filter Shiny applilcation
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: person('Martin', 'Haringa', email = 'mtharinga@gmail.com', role = c('cre', 'aut'))
 Description: Shiny application for spatial filtering. The app returns features that intersect with the shape drawn on the map.
 License: GPL (>= 2)

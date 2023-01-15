@@ -95,7 +95,7 @@ app_server <- function(input, output, session) {
   })
 
   shiny::observeEvent(input$golink, {
-    indata$data <- Groningen100
+    indata$data <- spatialfilter::Groningen100
     indata$header2 <- "2. Select columns in example data set"
   })
 

@@ -1,5 +1,6 @@
 ## code to prepare `Groningen100` dataset goes here
 
+library(spatialrisk)
 create_data <- function(n = 100){
   data.frame(lon = sample(spatialrisk::Groningen$lon, n),
              lat = sample(spatialrisk::Groningen$lat, n),
