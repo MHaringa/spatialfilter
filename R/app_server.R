@@ -192,7 +192,9 @@ app_server <- function(input, output, session) {
     if ( !isTRUE(input$tog1) ){
       m %>%
         leaflet::addCircleMarkers(lng = indata$data[[input$loninput]],
-                                  lat = indata$data[[input$latinput]])
+                                  lat = indata$data[[input$latinput]],
+                                  color = "navy",
+                                  radius = 8)
     }
   })
 
